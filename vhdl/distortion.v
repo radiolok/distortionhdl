@@ -1,5 +1,5 @@
 module distortion #(
-    parameter WIDTH=8
+    parameter WIDTH=32//float size
 )(
     input wire rst_n,
     input wire clk,
