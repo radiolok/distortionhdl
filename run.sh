@@ -5,7 +5,7 @@ trap cleanup SIGINT SIGTERM ERR EXIT
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-inputFile="${script_dir}/wav/test-audio.wav"
+inputFile="${script_dir}/AudioFile/examples/test-audio.wav"
 outputFile="${script_dir}/wav/result-audio.wav"
 trace=0
 
@@ -68,7 +68,7 @@ fi
 
 verilator -Wall ${TRACE_V} --top distortion --cc vhdl/distortion.v \
 	--timescale 1us/1ns \
-	--exe distortion.cpp -CFLAGS -I${script_dir}/include/ ${TRACE_G}
+	--exe distortion.cpp -CFLAGS -I${script_dir}/AudioFile/ ${TRACE_G}
 
 make -j`nproc` -C obj_dir -f Vdistortion.mk Vdistortion
 ./obj_dir/Vdistortion -i ${inputFile} -o ${outputFile}
