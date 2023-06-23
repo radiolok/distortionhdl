@@ -48,63 +48,58 @@ int main(int argc, char** argv, char** env) {
     assert (loadedOK);
 
     Verilated::traceEverOn(true);
+    Vdistortion* dut = new Vdistortion();
 #ifdef SIM_TRACE
     VerilatedVcdC *m_trace = new VerilatedVcdC;
+    dut->trace(m_trace, 5);
     m_trace->open("vdistortion.vcd");
 #endif
    
-
     float_cast val;
 
     for (int channel = 0; channel < a.getNumChannels(); channel++)
     {
-
         int samples =a.getNumSamplesPerChannel();
-        int s1 = 0;
-        int s2 = 0;
-
-        Vdistortion* dut = new Vdistortion();
-    #ifdef SIM_TRACE
-        dut->trace(m_trace, 5);
-    #endif
         dut->clk = 0;
         dut->rst_n = 1;
         for (int i = 0; i < samples + PIPELINE; i++)
         { 
             if (i < samples){
-                val.f = a.samples[channel][i]; 
-                s1++;
+                val.f = a.samples[channel][i];
             }
             dut->IN = val.i;
+            if (i >= PIPELINE){
+                val.i = dut->OUT;
+                a.samples[channel][i-PIPELINE] = val.f;
+            }
             if (sim_time == 1){
                 dut->rst_n = 0;
             }
             if (sim_time == 4){
                 dut->rst_n = 1;
             }
-            dut->clk ^= 1;
+            dut->clk = 1;
             dut->eval();
             #ifdef SIM_TRACE
-                if (sim_time < MAX_TRACE_TIME)
-                    m_trace->dump(sim_time);
+                m_trace->dump(sim_time);
+            #endif
+            sim_time++;    
+            dut->clk = 0;
+            dut->eval();
+            #ifdef SIM_TRACE
+                m_trace->dump(sim_time);
             #endif
             sim_time++;
-            if (i >= PIPELINE){
-                val.i = dut->OUT;
-                a.samples[channel][i-PIPELINE] = val.f;
-                s2++;
-            }
-
         }
-        if (s1 == s2)
-            std::cout << "OK!\n";
-        delete dut;
+
+
     }
-
-    a.save (outputFile);
-
 #ifdef SIM_TRACE
     m_trace->close();
 #endif
+    delete dut;
+    a.save (outputFile);
+
+
     exit(EXIT_SUCCESS);
 }
