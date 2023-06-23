@@ -75,6 +75,12 @@ verilator -Wall ${TRACE_V} --top distortion --cc vhdl/distortion.v \
 	--exe distortion.cpp -CFLAGS -I${script_dir}/AudioFile/ ${TRACE_G}
 
 make -j`nproc` -C obj_dir -f Vdistortion.mk Vdistortion
+
+outputDir=$(dirname ${outputFile})
+if [ ! -d ${outputDir} ]; then 
+    mkdir -p ${outputDir}
+fi
+
 ./obj_dir/Vdistortion -i ${inputFile} -o ${outputFile}
 
 md5sum ${outputFile}
