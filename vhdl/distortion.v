@@ -6,8 +6,9 @@ module distortion #(
     input wire [WIDTH-1:0] IN,
     output reg [WIDTH-1:0] OUT
 );
-
+/* verilator lint_off UNUSEDSIGNAL */
 reg [WIDTH-1:0] in;
+/* verilator lint_on UNUSEDSIGNAL */
 
 //Input flip-flop
 always @(posedge clk, negedge rst_n) begin
@@ -16,7 +17,7 @@ end
 
 wire [WIDTH-1:0] out;
 
-assign out = in;
+assign out = {in[15],in[15:1]};
 
 //output flip-flop
 always @(posedge clk, negedge rst_n) begin
