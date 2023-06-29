@@ -11,6 +11,8 @@
 
 
 #define MAX_TRACE_TIME 60000000
+
+
 vluint64_t sim_time = 0;
 
 #define PIPELINE 2
@@ -54,8 +56,6 @@ int main(int argc, char** argv, char** env) {
     dut->trace(m_trace, 5);
     m_trace->open("vdistortion.vcd");
 #endif
-   
-    float_cast val;
 
     for (int channel = 0; channel < a.getNumChannels(); channel++)
     {
@@ -65,12 +65,16 @@ int main(int argc, char** argv, char** env) {
         for (int i = 0; i < samples + PIPELINE; i++)
         { 
             if (i < samples){
-                val.f = a.samples[channel][i];
+                float sf = a.samples[channel][i];//from -1 to +1
+                sf = sf * 32768;//from -32768 to +32767
+                int16_t si = static_cast<int16_t>(sf);
+                dut->IN = si;
             }
-            dut->IN = val.i;
             if (i >= PIPELINE){
-                val.i = dut->OUT;
-                a.samples[channel][i-PIPELINE] = val.f;
+                int16_t si = dut->OUT;
+                float sf = static_cast<float>(si);
+                sf = sf / 32768;
+                a.samples[channel][i-PIPELINE] = sf;
             }
             if (sim_time == 1){
                 dut->rst_n = 0;
