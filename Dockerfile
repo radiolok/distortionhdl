@@ -56,12 +56,6 @@ RUN apt-get update -y &&  DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	libboost-python-dev libboost-filesystem-dev && \
     rm -rf /var/lib/apt/lists
 
-RUN wget https://github.com/YosysHQ/yosys/archive/refs/tags/yosys-0.30.tar.gz && \
-    tar -xvf yosys-0.30.tar.gz && cd yosys-yosys-0.30 && \
-    pip install liberty-parser && \
-    make config-gcc && make -j `nproc` && make install && \
-    cd / && rm -rf /yosys-yosys-0.30 && rm -rf yosys-0.30.tar.gz
-
 RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     iverilog && \
     rm -rf /var/lib/apt/lists
