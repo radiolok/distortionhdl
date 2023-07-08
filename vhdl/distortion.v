@@ -17,7 +17,14 @@ end
 
 wire [WIDTH-1:0] out;
 
-assign out = {in[15],in[15:1]};
+
+assign out = {in[15],in[14:0]}; //In => Out
+
+//assign out = {in[15],in[15:1]}; //Val -
+
+//Dummy distortion
+//assign out = {in[15],1'b0 ,in[13:0]};
+
 
 //output flip-flop
 always @(posedge clk, negedge rst_n) begin
