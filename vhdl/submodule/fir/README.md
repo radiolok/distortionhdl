@@ -16,7 +16,7 @@ iverilog -o fir_test fir.sv fir_tb.sv
 gtkwave out.vcd
 ```
 
-![alt text](img/vcd_result.jpg "pic")
+![alt text](img/vcd_result.png "pic")
 
 ## Calculate filter coef 
 https://github.com/chipmuenk/pyfda/releases/tag/v0.7.1
