@@ -29,8 +29,9 @@ You may use docker file to run the environment
 ```
 $git clone --recursive https://github.com/radiolok/distortionhdl.git
 $ cd distortionhdl
+$ sudo hwclock --hctosys //Optional
 $ sudo docker build -t distortion .
-$ sudo docker run --rm -it -v ./:/var/vhdl --entrypoint /var/vhdl/run.sh distortion
+$ sudo docker run --rm -it -v $(pwd):/var/vhdl --entrypoint /var/vhdl/run.sh distortion
 ```
 
 ### Manual setup
@@ -70,18 +71,5 @@ cd iverilog
 sh autoconf.sh
 ./configure
 make -j`nproc`
-sudo make install
-```
-
-yosys is a Verilog code synthesis tool. Used to create a netlist of selected PDK logic cells
-```
-sudo apt-get install build-essential clang flex \
-	libreadline-dev gawk tcl-dev libffi-dev \
-	graphviz xdot pkg-config python3 libboost-system-dev \
-	libboost-python-dev libboost-filesystem-dev
-git clone https://github.com/YosysHQ/yosys.git
-pip install liberty-parser
-make config-clang
-make
 sudo make install
 ```
