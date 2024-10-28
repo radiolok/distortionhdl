@@ -22,6 +22,12 @@ Each clock cycle we load integer 16-bit sample to verilog module and each clock 
 * Distortion - used to alter the sound of amplified electric musical instruments, usually by increasing their gain, producing a "fuzzy", "growling", or "gritty" tone
 * Reverbration - Reverberation is created when a sound or signal is reflected. This causes numerous reflections to build up and then decay as the sound is absorbed by the surfaces of objects in the space – which could include furniture, people, and air
 
+## How to use
+
+```
+./run.sh -i <path to input file> -o <path to output file>
+```
+
 ## Installation
 
 You may use docker file to run the environment
